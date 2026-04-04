@@ -1,0 +1,14 @@
+DECLARE
+  l_schema VARCHAR2(128) := SYS_CONTEXT('USERENV', 'CURRENT_SCHEMA');
+BEGIN
+  BEGIN
+    EXECUTE IMMEDIATE 'DROP MLE ENV "' || l_schema || '"."LEAVE_ENGINE_ENV"';
+  EXCEPTION
+    WHEN OTHERS THEN NULL;
+  END;
+
+  EXECUTE IMMEDIATE
+    'CREATE OR REPLACE MLE ENV "' || l_schema || '"."LEAVE_ENGINE_ENV" ' ||
+    'IMPORTS (''leave_engine_module'' MODULE "' || l_schema || '"."LEAVE_ENGINE_MODULE")';
+END;
+/

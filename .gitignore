@@ -1,0 +1,13 @@
+node_modules/
+coverage/
+dist/
+
+scripts/.env
+.env
+.DS_Store
+
+jest-results.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
