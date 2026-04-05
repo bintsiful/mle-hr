@@ -49,10 +49,28 @@ From the project root:
 bash scripts/deploy.sh
 ```
 
+The deploy script now:
+
+- runs Jest and writes `jest-results.json`
+- continues with the module sync even if some tests fail
+- generates SQL inserts from the Jest JSON report
+- pushes those results into `mle_test_results`
+- exits with the original Jest status at the end so CI still sees test failures
+
 The deploy script supports both:
 
 - direct Oracle connect strings with `DB_CS`
 - OCI wallet connections with `DB_WALLET` and `DB_SERVICE`
+
+## Test Result Sync Notes
+
+`scripts/push_results.js` converts `jest-results.json` into plain SQL for SQLcl.
+
+Failure messages are normalized before insert so Oracle can safely store Jest output that includes:
+
+- ANSI color codes
+- embedded newlines
+- stack traces and quoted text
 
 ## Environment Template
 
@@ -66,17 +84,10 @@ Your real credentials should go in:
 
 `scripts/.env` is ignored by Git.
 
-## Publishing To GitHub
+## GitHub
 
-This folder is ready to be turned into a Git repository and pushed to GitHub.
-
-Suggested commands:
+Push the current branch with:
 
 ```bash
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin <your-github-repo-url>
 git push -u origin main
 ```
